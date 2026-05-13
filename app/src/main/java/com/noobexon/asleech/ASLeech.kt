@@ -13,7 +13,7 @@ class ASLeech : AccessibilityService() {
             if (it.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                 val rootNode: AccessibilityNodeInfo? = rootInActiveWindow
                 rootNode?.let { root ->
-                    // logViewHierarchy(root, 0)
+                     logViewHierarchy(root, 0)
                     findAndPerformAction(root)
                 }
             }
@@ -40,20 +40,20 @@ class ASLeech : AccessibilityService() {
     }
 
     // logViewHierarchy() is only used to understand the view of each window, but is not needed for the actual logic.
-//    private fun logViewHierarchy(nodeInfo: AccessibilityNodeInfo, depth: Int) {
-//        val prefix = "  ".repeat(depth)
-//        val description = buildString {
-//            append(prefix)
-//            append(nodeInfo.toString())
-//        }
-//
-//        Log.d(tag, description)
-//
-//        for (i in 0 until nodeInfo.childCount) {
-//            val child = nodeInfo.getChild(i)
-//            child?.let {
-//                logViewHierarchy(it, depth + 1)
-//            }
-//        }
-//    }
+    private fun logViewHierarchy(nodeInfo: AccessibilityNodeInfo, depth: Int) {
+        val prefix = "  ".repeat(depth)
+        val description = buildString {
+            append(prefix)
+            append(nodeInfo.toString())
+        }
+
+        Log.d(tag, description)
+
+        for (i in 0 until nodeInfo.childCount) {
+            val child = nodeInfo.getChild(i)
+            child?.let {
+                logViewHierarchy(it, depth + 1)
+            }
+        }
+    }
 }
