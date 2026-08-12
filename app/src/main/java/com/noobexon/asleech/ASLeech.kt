@@ -17,6 +17,23 @@ class ASLeechDeviceAdminReceiver : DeviceAdminReceiver() {
 class ASLeech : AccessibilityService() {
     private val tag = "ASLeech"
 
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        // Fires once when the user enables the service in Settings, and again
+        // any time the OS restarts the service (e.g. after reboot).
+        // Runs off the main thread — setGlobalPrivateDnsModeSpecifiedHost() blocks.
+        Thread {
+            when (val result = PrivateDnsManager.applyDnsWithFallback(applicationContext)) {
+                is PrivateDnsManager.DnsResult.Success ->
+                    Log.i(tag, "Private DNS enforced: ${result.host}")
+                PrivateDnsManager.DnsResult.NotDeviceOwner ->
+                    Log.w(tag, "Not device owner — DNS enforcement skipped")
+                PrivateDnsManager.DnsResult.AllHostsFailed ->
+                    Log.e(tag, "All DNS fallback hosts failed")
+            }
+        }.start()
+    }
+
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         event ?: return
 
